@@ -25,7 +25,7 @@ public class PasajeroController {
     }
 
     @GetMapping("/find/{id}")
-    public PasajeroEntity findById(@PathVariable Integer id){
+    public PasajeroEntity findById(@PathVariable Long id){
         Optional<PasajeroEntity> optionalPasajero = pasajeroRepository.findById(id);
 
         if(optionalPasajero.isPresent()){

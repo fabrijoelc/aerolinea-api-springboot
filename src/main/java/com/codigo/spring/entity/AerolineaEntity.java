@@ -16,6 +16,6 @@ public class AerolineaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_aerolinea")
-    private Integer id;
+    private Long id;
     private String nombre;
 }

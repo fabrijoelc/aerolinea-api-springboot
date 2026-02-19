@@ -24,7 +24,7 @@ public class AerolineaController {
     }
 
     @GetMapping("/find/{id}")
-    public AerolineaEntity findById(@PathVariable Integer id){
+    public AerolineaEntity findById(@PathVariable Long id){
         Optional<AerolineaEntity> optionalAerolinea = aerolineaRepository.findById(id);
 
         if(optionalAerolinea.isPresent()){
