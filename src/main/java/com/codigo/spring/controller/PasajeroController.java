@@ -22,6 +22,6 @@ public class PasajeroController {
     @PostMapping("/save")
     public PasajeroEntity save(@RequestBody PasajeroEntity pasajeroEntity){
         PasajeroEntity savedEntity = pasajeroRepository.save(pasajeroEntity);
-        return pasajeroRepository.save(savedEntity);
+        return savedEntity;
     }
 }
