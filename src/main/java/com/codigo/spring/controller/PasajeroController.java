@@ -4,10 +4,9 @@ import com.codigo.spring.entity.AerolineaEntity;
 import com.codigo.spring.entity.PasajeroEntity;
 import com.codigo.spring.repository.AerolineaRepository;
 import com.codigo.spring.repository.PasajeroRepository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/pasajero")
@@ -23,5 +22,15 @@ public class PasajeroController {
     public PasajeroEntity save(@RequestBody PasajeroEntity pasajeroEntity){
         PasajeroEntity savedEntity = pasajeroRepository.save(pasajeroEntity);
         return savedEntity;
+    }
+
+    @GetMapping("/find/{id}")
+    public PasajeroEntity findById(@PathVariable Integer id){
+        Optional<PasajeroEntity> optionalPasajero = pasajeroRepository.findById(id);
+
+        if(optionalPasajero.isPresent()){
+            return optionalPasajero.get();
+        }
+        return null;
     }
 }
