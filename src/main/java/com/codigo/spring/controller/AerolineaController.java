@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/aerolinea")
 public class AerolineaController {
 
-    private AerolineaRepository aerolineaRepository;
+    private final AerolineaRepository aerolineaRepository;
 
     public AerolineaController(AerolineaRepository aerolineaRepository){
         this.aerolineaRepository = aerolineaRepository;
