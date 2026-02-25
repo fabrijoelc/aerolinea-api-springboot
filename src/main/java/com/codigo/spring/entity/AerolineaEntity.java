@@ -1,10 +1,14 @@
 package com.codigo.spring.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "aerolineas")
@@ -18,4 +22,7 @@ public class AerolineaEntity {
     @Column(name = "id_aerolinea")
     private Integer id;
     private String nombre;
+
+    @OneToMany(mappedBy = "aerolinea")
+    List<AvionEntity> aviones;
 }
