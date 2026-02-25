@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface AvionRepository extends JpaRepository<AvionEntity, Long> {
+public interface AvionRepository extends JpaRepository<AvionEntity, Integer> {
     @Query(value = "SELECT * FROM aviones WHERE modelo = :modelo", nativeQuery = true)
     List<AvionEntity> customFindByModelo(String modelo);
     List<AvionEntity> findByModelo(String modelo);

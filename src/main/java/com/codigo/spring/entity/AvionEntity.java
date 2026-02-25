@@ -12,7 +12,7 @@ public class AvionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_avion")
-    private Long id;
+    private Integer id;
     private int capacidad;
     private int peso;
     private String modelo;

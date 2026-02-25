@@ -24,7 +24,7 @@ public class AvionController {
     }
 
     @GetMapping("/find/{id}")
-    public AvionEntity findById(@PathVariable Long id) {
+    public AvionEntity findById(@PathVariable Integer id) {
         Optional<AvionEntity> optionalAvion = avionRepository.findById(id);
 
         if (optionalAvion.isPresent()) {

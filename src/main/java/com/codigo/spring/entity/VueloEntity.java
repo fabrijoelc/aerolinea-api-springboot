@@ -17,7 +17,7 @@ public class VueloEntity {
     private Long id;
     private Date fechaSalida;
     private Date fechaLlegada;
-    private String Origen;
+    private String origen;
     private String destino;
 
     @ManyToOne

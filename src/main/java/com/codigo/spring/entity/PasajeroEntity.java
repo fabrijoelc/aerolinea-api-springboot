@@ -16,7 +16,7 @@ public class PasajeroEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pasajero")
-    private Long id;
+    private Integer id;
     private String nombre;
     private String apellido;
 }
