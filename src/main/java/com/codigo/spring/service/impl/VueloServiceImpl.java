@@ -5,6 +5,8 @@ import com.codigo.spring.entity.VueloEntity;
 import com.codigo.spring.repository.AvionRepository;
 import com.codigo.spring.repository.VueloRepository;
 import com.codigo.spring.request.VueloRequest;
+import com.codigo.spring.response.AvionResponse;
+import com.codigo.spring.response.VueloResponse;
 import com.codigo.spring.service.VueloService;
 import org.springframework.stereotype.Service;
 
@@ -40,12 +42,20 @@ public class VueloServiceImpl implements VueloService {
     }
 
     @Override
-    public VueloEntity findById(int id) {
+    public VueloResponse findById(int id) {
         Optional<VueloEntity> optionalVuelo = vueloRepository.findById(id);
 
         if (optionalVuelo.isEmpty()){
             return null;
         }
-        return optionalVuelo.get();
+        VueloEntity vueloEntity = optionalVuelo.get();
+        VueloResponse vueloResponse = new VueloResponse();
+        vueloResponse.setFechaSalida(vueloEntity.getFechaSalida());
+        vueloResponse.setFechaLlegada(vueloResponse.getFechaLlegada());
+        vueloResponse.setOrigen(vueloEntity.getOrigen());
+        vueloResponse.setDestino(vueloEntity.getDestino());
+        vueloResponse.setAvion(new AvionResponse(vueloEntity.getAvion().getCapacidad(),
+                vueloEntity.getAvion().getModelo()));
+        return vueloResponse;
     }
 }
