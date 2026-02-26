@@ -20,4 +20,9 @@ public class VueloController {
     public VueloEntity save(@RequestBody VueloRequest vueloRequest){
         return vueloService.save(vueloRequest);
     }
+
+    @GetMapping("/find/{id}")
+    public VueloEntity findById(@PathVariable int id){
+        return vueloService.findById(id);
+    }
 }

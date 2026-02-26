@@ -40,7 +40,12 @@ public class VueloServiceImpl implements VueloService {
     }
 
     @Override
-    public VueloEntity findById(Integer id) {
-        return null;
+    public VueloEntity findById(int id) {
+        Optional<VueloEntity> optionalVuelo = vueloRepository.findById(id);
+
+        if (optionalVuelo.isEmpty()){
+            return null;
+        }
+        return optionalVuelo.get();
     }
 }

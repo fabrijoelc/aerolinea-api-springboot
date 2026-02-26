@@ -6,5 +6,5 @@ import com.codigo.spring.request.VueloRequest;
 public interface VueloService {
     VueloEntity save(VueloRequest vueloRequest);
 
-    VueloEntity findById(Integer id);
+    VueloEntity findById(int id);
 }
