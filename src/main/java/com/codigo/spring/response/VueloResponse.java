@@ -13,5 +13,5 @@ public class VueloResponse {
     private String origen;
     private String destino;
 
-    private AvionResponse avion;
+    private AvionResponseBase avion;
 }
