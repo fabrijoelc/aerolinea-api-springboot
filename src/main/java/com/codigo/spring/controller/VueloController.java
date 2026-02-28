@@ -7,6 +7,9 @@ import com.codigo.spring.service.VueloService;
 import com.codigo.spring.service.impl.VueloServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/vuelo")
 public class VueloController {
@@ -25,5 +28,10 @@ public class VueloController {
     @GetMapping("/find/{id}")
     public VueloResponse findById(@PathVariable int id){
         return vueloService.findById(id);
+    }
+
+    @GetMapping("/find")
+    public List<VueloResponse> findByFecha(@RequestParam Date fechaSalida){
+        return vueloService.findAllByFechaSalida(fechaSalida);
     }
 }
