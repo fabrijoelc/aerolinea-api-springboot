@@ -1,12 +1,9 @@
 package com.codigo.spring.controller;
 
 import com.codigo.spring.entity.AerolineaEntity;
-import com.codigo.spring.entity.PasajeroEntity;
 import com.codigo.spring.repository.AerolineaRepository;
 import com.codigo.spring.service.AerolineaService;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/aerolinea")
@@ -22,8 +19,7 @@ public class AerolineaController {
 
     @PostMapping("/save")
     public AerolineaEntity save(@RequestBody AerolineaEntity aerolineaEntity){
-        AerolineaEntity savedEntity = aerolineaRepository.save(aerolineaEntity);
-        return aerolineaRepository.save(savedEntity);
+        return aerolineaRepository.save(aerolineaEntity);
     }
 
     @GetMapping("/find/{id}")
