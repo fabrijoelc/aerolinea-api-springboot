@@ -2,6 +2,7 @@ package com.codigo.spring.controller;
 
 import com.codigo.spring.entity.VueloEntity;
 import com.codigo.spring.request.VueloRequest;
+import com.codigo.spring.request.VueloRequestUpdatePilotos;
 import com.codigo.spring.response.VueloResponse;
 import com.codigo.spring.service.VueloService;
 import com.codigo.spring.service.impl.VueloServiceImpl;
@@ -33,5 +34,11 @@ public class VueloController {
     @GetMapping("/find")
     public List<VueloResponse> findByFecha(@RequestParam Date fechaSalida){
         return vueloService.findAllByFechaSalida(fechaSalida);
+    }
+
+    // Actualizar el avion de un determinado vuelo
+    @PutMapping("/update/pilotos")
+    public VueloResponse updatePilotos(@RequestBody VueloRequestUpdatePilotos vueloRequest){
+        return vueloService.addPilotosToVuelo(vueloRequest);
     }
 }
