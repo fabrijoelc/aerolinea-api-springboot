@@ -3,9 +3,9 @@ package com.codigo.spring.controller;
 import com.codigo.spring.entity.VueloEntity;
 import com.codigo.spring.request.VueloRequest;
 import com.codigo.spring.request.VueloRequestUpdatePilotos;
+import com.codigo.spring.response.ResponseBase;
 import com.codigo.spring.response.VueloResponse;
 import com.codigo.spring.service.VueloService;
-import com.codigo.spring.service.impl.VueloServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -38,7 +38,7 @@ public class VueloController {
 
     // Actualizar el avion de un determinado vuelo
     @PutMapping("/update/pilotos")
-    public VueloResponse updatePilotos(@RequestBody VueloRequestUpdatePilotos vueloRequest){
+    public ResponseBase<VueloResponse> updatePilotos(@RequestBody VueloRequestUpdatePilotos vueloRequest){
         return vueloService.addPilotosToVuelo(vueloRequest);
     }
 }

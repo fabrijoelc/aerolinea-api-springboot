@@ -3,6 +3,7 @@ package com.codigo.spring.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.engine.internal.Cascade;
 
 import java.sql.Date;
 import java.util.List;
