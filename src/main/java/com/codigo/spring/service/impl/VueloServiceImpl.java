@@ -82,18 +82,25 @@ public class VueloServiceImpl implements VueloService {
 
     @Override
     public ResponseBase<VueloResponse> addPilotosToVuelo(VueloRequestUpdatePilotos vueloRequestUpdatePilotos) {
-        //List<PilotoEntity> pilotosVuelo = vueloRepository.findPilotosByVuelo(vueloRequestUpdatePilotos.getIdVuelo());
+
         List<PilotoEntity> nuevosPilotos = pilotoRepository.findPilotosByIds(vueloRequestUpdatePilotos.getIdsPilotos());
         Optional<VueloEntity> vueloEntityOptional = vueloRepository.findById(vueloRequestUpdatePilotos.getIdVuelo());
 
         if (vueloEntityOptional.isEmpty() || nuevosPilotos.size() != vueloRequestUpdatePilotos.getIdsPilotos().size()) {
             return new ResponseBase<VueloResponse>(Constants.CODE_NOT_FOUND, Constants.MESSAGE_NOT_FOUND, Optional.empty());
         }
-        VueloEntity vueloEntity = vueloEntityOptional.get();
 
+        VueloEntity vueloEntity = vueloEntityOptional.get();
         List<PilotoEntity> pilotosVuelo = vueloEntity.getPilotos();
-        pilotosVuelo.addAll(nuevosPilotos);
-        vueloEntity.setPilotos(pilotosVuelo);
+
+        for (PilotoEntity piloto : nuevosPilotos) {
+            if (!pilotosVuelo.contains(piloto)) {
+                pilotosVuelo.add(piloto);
+                piloto.getVuelos().add(vueloEntity);
+            }
+        }
+
+        //vueloEntity.setPilotos(pilotosVuelo);
         vueloRepository.save(vueloEntity);
 
         VueloResponse vueloResponse = new VueloResponse(
@@ -101,9 +108,13 @@ public class VueloServiceImpl implements VueloService {
                 vueloEntity.getFechaLlegada(),
                 vueloEntity.getOrigen(),
                 vueloEntity.getDestino(),
-                new AvionResponseBase(vueloEntity.getAvion().getCapacidad(), vueloEntity.getAvion().getModelo()),
+                new AvionResponseBase(
+                        vueloEntity.getAvion().getCapacidad(),
+                        vueloEntity.getAvion().getModelo()
+                ),
                 processPilotos(pilotosVuelo)
         );
+
         return new ResponseBase<>(Constants.CODE_SUCCESS, Constants.MESSAGE_SUCCESS, Optional.of(vueloResponse));
     }
 
