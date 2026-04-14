@@ -11,7 +11,10 @@ public class Constants {
     public static final String MESSAGE_NOT_FOUND = "No se encontró el recurso solicitado.";
     public static final String MESSAGE_ALREADY_EXISTS = "El recurso ya existe.";
     public static final String MESSAGE_ALREADY_DELETED = "El recurso ya ha sido eliminado.";
-    public static final String MESSAGE_SUCCESS = "Operación realizada con éxito.";
-    public static final String MESSAGE_ERROR = "Ocurrió un error al procesar la solicitud";
+    public static final String MESSAGE_SUCCESS_UPDATED = "Datos actualizados correctamente.";
+    public static final String MESSAGE_SUCCESS_DELET = "Datos eliminado con éxito.";
+    public static final String MESSAGE_SUCCES_INSERT = "Datos actualizados correctamente.";
+    public static final String MESSAGE_SUCCESS_FIND = "Datops encontrados correctamente.";
+
 
 }

@@ -115,7 +115,7 @@ public class VueloServiceImpl implements VueloService {
                 processPilotos(pilotosVuelo)
         );
 
-        return new ResponseBase<>(Constants.CODE_SUCCESS, Constants.MESSAGE_SUCCESS, Optional.of(vueloResponse));
+        return new ResponseBase<>(Constants.CODE_SUCCESS, Constants.MESSAGE_SUCCESS_UPDATED, Optional.of(vueloResponse));
     }
 
     private List<String> processPilotos(List<PilotoEntity> pilotoEntities){

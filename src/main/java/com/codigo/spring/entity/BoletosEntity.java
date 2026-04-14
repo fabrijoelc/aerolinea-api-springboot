@@ -1,16 +1,14 @@
 package com.codigo.spring.entity;
 
-import com.codigo.spring.repository.VueloRepository;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
 @Getter
 @Setter
 @Entity
 @Table(name = "boletos")
-public class BoletoEntity {
+public class BoletosEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_boleto")
