@@ -14,7 +14,7 @@ public class Constants {
     public static final String MESSAGE_SUCCESS_UPDATED = "Datos actualizados correctamente.";
     public static final String MESSAGE_SUCCESS_DELET = "Datos eliminado con éxito.";
     public static final String MESSAGE_SUCCES_INSERT = "Datos actualizados correctamente.";
-    public static final String MESSAGE_SUCCESS_FIND = "Datops encontrados correctamente.";
+    public static final String MESSAGE_SUCCESS_FIND = "Datos encontrados correctamente.";
 
 
 }
