@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.codigo</groupId>
-	<artifactId>spring</artifactId>
+	<artifactId>aerolinea-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring</name>
-	<description>Proyecto Spring Boot</description>
+	<name>aerolinea-api</name>
+	<description>API REST para la gestion de aerolineas, vuelos, aviones, pasajeros y boletos</description>
 	<url/>
 	<licenses>
 		<license/>
