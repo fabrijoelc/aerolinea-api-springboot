@@ -19,24 +19,24 @@ public class AerolineaServiceImpl implements AerolineaService {
 
     @Override
     public AerolineaEntity save(AerolineaEntity aerolinea) {
-        return null;
+        return aerolineaRepository.save(aerolinea);
     }
 
     @Override
     public List<AerolineaEntity> findAll() {
-        return List.of();
+        return aerolineaRepository.findAll();
     }
 
     @Override
     public AerolineaEntity findById(int id) {
-        return null;
+        return aerolineaRepository.findById(id).orElse(null);
     }
 
     @Override
     public AerolineaEntity updateById(AerolineaEntity aerolinea) {
         if(aerolineaRepository.existsById(aerolinea.getId())){
             return aerolineaRepository.save(aerolinea);
-        };
+        }
         return null;
     }
 }

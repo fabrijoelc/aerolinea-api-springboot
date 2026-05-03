@@ -1,7 +1,6 @@
 package com.codigo.spring.controller;
 
 import com.codigo.spring.entity.AerolineaEntity;
-import com.codigo.spring.repository.AerolineaRepository;
 import com.codigo.spring.service.AerolineaService;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,22 +8,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/aerolinea")
 public class AerolineaController {
 
-    private final AerolineaRepository aerolineaRepository;
     private final AerolineaService aerolineaService;
 
-    public AerolineaController(AerolineaRepository aerolineaRepository, AerolineaService aerolineaService){
-        this.aerolineaRepository = aerolineaRepository;
+    public AerolineaController(AerolineaService aerolineaService){
         this.aerolineaService = aerolineaService;
     }
 
     @PostMapping("/save")
     public AerolineaEntity save(@RequestBody AerolineaEntity aerolineaEntity){
-        return aerolineaRepository.save(aerolineaEntity);
+        return aerolineaService.save(aerolineaEntity);
     }
 
     @GetMapping("/find/{id}")
     public AerolineaEntity findById(@PathVariable int id) {
-        return aerolineaRepository.findById(id).orElse(null);
+        return aerolineaService.findById(id);
     }
 
     @PutMapping("/update/{id}")
