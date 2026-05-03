@@ -8,6 +8,7 @@ import com.codigo.spring.repository.AvionRepository;
 import com.codigo.spring.response.AvionResponse;
 import com.codigo.spring.response.ResponseBase;
 import com.codigo.spring.service.AvionService;
+import com.codigo.spring.utils.Constants;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,21 +28,49 @@ public class AvionServiceImpl implements AvionService {
 
     @Override
     public AvionEntity save(AvionEntity avionEntity) {
-        return null;
+        return avionRepository.save(avionEntity);
+    }
+
+    @Override
+    public ResponseBase<AvionResponse> findById(Integer id) {
+        Optional<AvionEntity> avionEntityOptional = avionRepository.findById(id);
+
+        if (avionEntityOptional.isEmpty()) {
+            return new ResponseBase<>(Constants.CODE_NOT_FOUND, Constants.MESSAGE_NOT_FOUND, Optional.empty());
+        }
+        return new ResponseBase<>(Constants.CODE_SUCCESS, Constants.MESSAGE_SUCCESS_FIND,
+                Optional.of(toAvionResponse(avionEntityOptional.get())));
+    }
+
+    @Override
+    public List<AvionResponse> findByModelo(String modelo) {
+        List<AvionEntity> list = avionRepository.findByModelo(modelo);
+        List<AvionResponse> responseList = new ArrayList<>();
+
+        for (AvionEntity avionEntity : list) {
+            responseList.add(toAvionResponse(avionEntity));
+        }
+        return responseList;
     }
 
     @Override
     public List<AvionResponse> findAll() {
-        return List.of();
+        List<AvionEntity> list = avionRepository.findAll();
+        List<AvionResponse> responseList = new ArrayList<>();
+
+        for (AvionEntity avionEntity : list) {
+            responseList.add(toAvionResponse(avionEntity));
+        }
+        return responseList;
     }
 
     @Override
     public List<AvionResponse> findAllCapacidad(int min, int max) {
-        List<AvionEntity> list = avionRepository.findByCapacidad(min, max);
+        List<AvionEntity> list = avionRepository.findByCapacidadBetween(min, max);
         List<AvionResponse> responseList = new ArrayList<>();
 
         for(AvionEntity avionEntity : list){
-            responseList.add(AvionMapper.INSTANCE.toAvionResponse(avionEntity, avionEntity.getAerolinea()));
+            responseList.add(toAvionResponse(avionEntity));
         }
         return responseList;
     }
@@ -58,17 +87,12 @@ public class AvionServiceImpl implements AvionService {
             avionEntity.setAerolinea(aerolineaEntity);
             avionRepository.save(avionEntity);
 
-            return new ResponseBase<>(200, "Actualizacion correcta", Optional.of(fromAvionEntity(avionEntity)));
+            return new ResponseBase<>(200, "Actualizacion correcta", Optional.of(toAvionResponse(avionEntity)));
         }
         return new ResponseBase<>(404, "No se encontró el avión o la aerolínea", Optional.empty());
     }
 
-    private AvionResponse fromAvionEntity(AvionEntity avionEntity){
-        return new AvionResponse(
-                avionEntity.getCapacidad(),
-                avionEntity.getModelo(),
-                avionEntity.getPeso(),
-                avionEntity.getAerolinea().getNombre()
-        );
+    private AvionResponse toAvionResponse(AvionEntity avionEntity){
+        return AvionMapper.INSTANCE.toAvionResponse(avionEntity, avionEntity.getAerolinea());
     }
 }
