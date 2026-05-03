@@ -14,8 +14,11 @@ public class AvionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_avion")
     private Integer id;
+
     private int capacidad;
+
     private int peso;
+
     private String modelo;
 
     @JsonIgnore
