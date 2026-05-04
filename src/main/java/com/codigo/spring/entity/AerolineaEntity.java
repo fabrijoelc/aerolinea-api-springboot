@@ -19,6 +19,7 @@ public class AerolineaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_aerolinea")
     private Integer id;
+
     private String nombre;
 
     @OneToMany(mappedBy = "aerolinea")
