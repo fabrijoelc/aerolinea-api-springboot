@@ -6,13 +6,13 @@ import com.codigo.spring.request.VueloRequestUpdatePilotos;
 import com.codigo.spring.response.ResponseBase;
 import com.codigo.spring.response.VueloResponse;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface VueloService {
     VueloEntity save(VueloRequest vueloRequest);
-    VueloResponse findById(int id);
-    List<VueloResponse> findAllByFechaSalida(Date fechaSalida);
+    VueloResponse findById(Long id);
+    List<VueloResponse> findAllByFechaSalida(LocalDate fechaSalida);
     ResponseBase<VueloResponse> addPilotosToVuelo (VueloRequestUpdatePilotos vueloRequestUpdatePilotos);
 
 }

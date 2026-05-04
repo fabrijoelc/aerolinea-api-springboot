@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -15,6 +15,6 @@ public class BoletoResponse {
     private int asiento;
     private String origen;
     private String destino;
-    private Date fechaSalida;
-    private Date fechaLlegada;
+    private LocalDate fechaSalida;
+    private LocalDate fechaLlegada;
 }

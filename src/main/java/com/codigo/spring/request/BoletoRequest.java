@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 
 public class BoletoRequest {
-    private int idVuelo;
+    private Long idVuelo;
     private int idCliente;
     private int asiento;
 }

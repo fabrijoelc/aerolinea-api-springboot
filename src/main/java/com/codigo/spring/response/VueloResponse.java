@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -13,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VueloResponse {
-    private Date fechaSalida;
-    private Date fechaLlegada;
+    private LocalDate fechaSalida;
+    private LocalDate fechaLlegada;
     private String origen;
     private String destino;
 

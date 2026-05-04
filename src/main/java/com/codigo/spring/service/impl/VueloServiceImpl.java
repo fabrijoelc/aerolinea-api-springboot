@@ -15,7 +15,7 @@ import com.codigo.spring.service.VueloService;
 import com.codigo.spring.utils.Constants;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +52,7 @@ public class VueloServiceImpl implements VueloService {
     }
 
     @Override
-    public VueloResponse findById(int id) {
+    public VueloResponse findById(Long id) {
         Optional<VueloEntity> optionalVuelo = vueloRepository.findById(id);
 
         if (optionalVuelo.isEmpty()){
@@ -70,7 +70,7 @@ public class VueloServiceImpl implements VueloService {
     }
 
     @Override
-    public List<VueloResponse> findAllByFechaSalida(Date fechaSalida) {
+    public List<VueloResponse> findAllByFechaSalida(LocalDate fechaSalida) {
         List<VueloEntity> vueloEntities = vueloRepository.findByFechaSalida(fechaSalida);
         List<VueloResponse> vueloResponses = new ArrayList<>();
 

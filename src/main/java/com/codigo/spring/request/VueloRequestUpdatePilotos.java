@@ -8,6 +8,6 @@ import java.util.List;
 @Getter
 @Setter
 public class VueloRequestUpdatePilotos {
-    private int idVuelo;
+    private Long idVuelo;
     private List<Integer> idsPilotos;
 }

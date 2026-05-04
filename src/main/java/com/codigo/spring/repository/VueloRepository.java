@@ -5,13 +5,13 @@ import com.codigo.spring.entity.VueloEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
-public interface VueloRepository extends JpaRepository<VueloEntity, Integer> {
+public interface VueloRepository extends JpaRepository<VueloEntity, Long> {
 
     @Query(value = "SELECT * FROM vuelos WHERE fecha_salida >= :fechaSalida ORDER BY(fecha_salida) ASC", nativeQuery = true)
-    List<VueloEntity> findByFechaSalida(Date fechaSalida);
+    List<VueloEntity> findByFechaSalida(LocalDate fechaSalida);
 
     @Query(value = "SELECT p.id_piloto, p.nombre, p.apellido, p.estado,\n" +
             "\tp.fecha_creacion, p.fecha_modificacion, p.fecha_eliminacion\n" +
@@ -20,5 +20,5 @@ public interface VueloRepository extends JpaRepository<VueloEntity, Integer> {
             "JOIN pilotos p ON \n" +
             "vp.id_piloto_fk = p.id_piloto\n" +
             "WHERE v.id_vuelo = :idVuelo", nativeQuery = true)
-    List<PilotoEntity> findPilotosByVuelo(int idVuelo);
+    List<PilotoEntity> findPilotosByVuelo(Long idVuelo);
 }

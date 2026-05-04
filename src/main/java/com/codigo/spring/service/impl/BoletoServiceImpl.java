@@ -44,7 +44,7 @@ public class BoletoServiceImpl implements BoletoService {
         }
 
         BoletosEntity boleto = new BoletosEntity();
-        boleto.setAsiento(boletoRequest.getIdVuelo());
+        boleto.setAsiento(boletoRequest.getAsiento());
         boleto.setVuelo(vuelo);
         boleto.setPasajero(pasajero);
         boletoRepository.save(boleto);

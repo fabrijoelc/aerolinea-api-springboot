@@ -11,5 +11,5 @@ public interface BoletoRepository extends JpaRepository<BoletosEntity, Integer> 
     List<BoletosEntity> findBoletosbyPasajeroId(int idPasajero);
 
     @Query(value = "SELECT * FROM boletos WHERE id_vuelo_fk =:idVuelo;", nativeQuery = true)
-    List<BoletosEntity> findBoletosbyVueloId(int idVuelo);
+    List<BoletosEntity> findBoletosbyVueloId(Long idVuelo);
 }

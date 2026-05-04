@@ -6,9 +6,10 @@ import com.codigo.spring.request.VueloRequestUpdatePilotos;
 import com.codigo.spring.response.ResponseBase;
 import com.codigo.spring.response.VueloResponse;
 import com.codigo.spring.service.VueloService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -27,12 +28,12 @@ public class VueloController {
     }
 
     @GetMapping("/find/{id}")
-    public VueloResponse findById(@PathVariable int id){
+    public VueloResponse findById(@PathVariable Long id){
         return vueloService.findById(id);
     }
 
     @GetMapping("/find")
-    public List<VueloResponse> findByFecha(@RequestParam Date fechaSalida){
+    public List<VueloResponse> findByFecha(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaSalida){
         return vueloService.findAllByFechaSalida(fechaSalida);
     }
 
