@@ -8,6 +8,6 @@ import lombok.Setter;
 
 public class BoletoRequest {
     private Long idVuelo;
-    private int idCliente;
+    private int idPasajero;
     private int asiento;
 }

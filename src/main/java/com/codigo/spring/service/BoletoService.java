@@ -2,8 +2,8 @@ package com.codigo.spring.service;
 
 import com.codigo.spring.request.BoletoRequest;
 import com.codigo.spring.response.BoletoResponse;
+import com.codigo.spring.response.ResponseBase;
 
 public interface BoletoService {
-    BoletoResponse save(BoletoRequest boletoRequest);
-    BoletoResponse findById(int idVuelo);
+    ResponseBase<BoletoResponse> save(BoletoRequest boletoRequest);
 }

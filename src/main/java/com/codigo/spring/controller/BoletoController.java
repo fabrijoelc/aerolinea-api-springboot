@@ -4,16 +4,15 @@ import com.codigo.spring.request.BoletoRequest;
 import com.codigo.spring.response.BoletoResponse;
 import com.codigo.spring.response.ResponseBase;
 import com.codigo.spring.service.BoletoService;
-import com.codigo.spring.utils.Constants;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/boleto")
+@Tag(name = "Boletos", description = "Endpoints para registrar boletos de pasajeros en vuelos")
 public class BoletoController {
     private final BoletoService boletoService;
 
@@ -21,15 +20,14 @@ public class BoletoController {
         this.boletoService = boletoService;
     }
 
+    @Operation(summary = "Registrar un boleto", description = "Registra un boleto para un pasajero en un vuelo, validando que el asiento no este ocupado.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Boleto registrado correctamente"),
+            @ApiResponse(responseCode = "404", description = "Vuelo o pasajero no encontrados"),
+            @ApiResponse(responseCode = "409", description = "El asiento ya esta ocupado")
+    })
     @PostMapping("/save")
     public ResponseBase<BoletoResponse> save(@RequestBody BoletoRequest boletoRequest){
-        BoletoResponse boletoResponse = boletoService.save(boletoRequest);
-
-        if (boletoResponse == null) {
-            return new ResponseBase<>(Constants.CODE_NOT_FOUND, Constants.MESSAGE_NOT_FOUND, Optional.empty());
-        }
-        return new ResponseBase<>(Constants.CODE_SUCCESS, Constants.MESSAGE_SUCCES_INSERT, Optional.of(boletoResponse));
+        return boletoService.save(boletoRequest);
     }
-
-
 }
