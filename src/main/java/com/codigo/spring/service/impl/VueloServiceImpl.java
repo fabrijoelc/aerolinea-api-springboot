@@ -77,7 +77,7 @@ public class VueloServiceImpl implements VueloService {
     @Override
     public ResponseBase<VueloResponse> addPilotosToVuelo(VueloRequestUpdatePilotos vueloRequestUpdatePilotos) {
 
-        List<PilotoEntity> nuevosPilotos = pilotoRepository.findPilotosByIds(vueloRequestUpdatePilotos.getIdsPilotos());
+        List<PilotoEntity> nuevosPilotos = pilotoRepository.findByIdIn(vueloRequestUpdatePilotos.getIdsPilotos());
         Optional<VueloEntity> vueloEntityOptional = vueloRepository.findById(vueloRequestUpdatePilotos.getIdVuelo());
 
         if (vueloEntityOptional.isEmpty() || nuevosPilotos.size() != vueloRequestUpdatePilotos.getIdsPilotos().size()) {

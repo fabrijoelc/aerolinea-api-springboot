@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -20,9 +20,15 @@ public class PilotoEntity {
     private String nombre;
     private String apellido;
     private Boolean estado;
-    private Date fechaCreacion;
-    private Date fechaModificacion;
-    private Date fechaEliminacion;
+
+    @Column(name = "fecha_creacion")
+    private LocalDate fechaCreacion;
+
+    @Column(name = "fecha_modificacion")
+    private LocalDate fechaModificacion;
+
+    @Column(name = "fecha_eliminacion")
+    private LocalDate fechaEliminacion;
 
     @ManyToMany
     @JoinTable(name = "vuelo_piloto",
