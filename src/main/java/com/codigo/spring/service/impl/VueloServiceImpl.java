@@ -3,12 +3,12 @@ package com.codigo.spring.service.impl;
 import com.codigo.spring.entity.AvionEntity;
 import com.codigo.spring.entity.PilotoEntity;
 import com.codigo.spring.entity.VueloEntity;
+import com.codigo.spring.mapper.VueloMapper;
 import com.codigo.spring.repository.AvionRepository;
 import com.codigo.spring.repository.PilotoRepository;
 import com.codigo.spring.repository.VueloRepository;
 import com.codigo.spring.request.VueloRequest;
 import com.codigo.spring.request.VueloRequestUpdatePilotos;
-import com.codigo.spring.response.AvionResponseBase;
 import com.codigo.spring.response.ResponseBase;
 import com.codigo.spring.response.VueloResponse;
 import com.codigo.spring.service.VueloService;
@@ -34,48 +34,42 @@ public class VueloServiceImpl implements VueloService {
     }
 
     @Override
-    public VueloEntity save(VueloRequest vueloRequest) {
+    public ResponseBase<VueloResponse> save(VueloRequest vueloRequest) {
+        if (vueloRequest.getFechaLlegada().isBefore(vueloRequest.getFechaSalida())) {
+            return new ResponseBase<>(Constants.CODE_ERROR, Constants.MESSAGE_INVALID_DATES, Optional.empty());
+        }
+
         Optional<AvionEntity> optionalAvionEntity = avionRepository.findById(vueloRequest.getAvionId());
 
         if(optionalAvionEntity.isEmpty()){
-            return null;
+            return new ResponseBase<>(Constants.CODE_NOT_FOUND, Constants.MESSAGE_NOT_FOUND, Optional.empty());
         }
 
-        VueloEntity vueloEntity = new VueloEntity();
-        vueloEntity.setOrigen(vueloRequest.getOrigen());
-        vueloEntity.setDestino(vueloRequest.getDestino());
-        vueloEntity.setFechaLlegada(vueloRequest.getFechaLlegada());
-        vueloEntity.setFechaSalida(vueloRequest.getFechaSalida());
-        vueloEntity.setAvion(optionalAvionEntity.get());
+        VueloEntity vueloEntity = VueloMapper.INSTANCE.toVueloEntity(vueloRequest, optionalAvionEntity.get());
+        VueloEntity vueloGuardado = vueloRepository.save(vueloEntity);
 
-        return vueloRepository.save(vueloEntity);
+        return new ResponseBase<>(Constants.CODE_SUCCESS, Constants.MESSAGE_SUCCES_INSERT,
+                Optional.of(toVueloResponse(vueloGuardado)));
     }
 
     @Override
-    public VueloResponse findById(Long id) {
+    public ResponseBase<VueloResponse> findById(Long id) {
         Optional<VueloEntity> optionalVuelo = vueloRepository.findById(id);
 
         if (optionalVuelo.isEmpty()){
-            return null;
+            return new ResponseBase<>(Constants.CODE_NOT_FOUND, Constants.MESSAGE_NOT_FOUND, Optional.empty());
         }
-        VueloEntity vueloEntity = optionalVuelo.get();
-        VueloResponse vueloResponse = new VueloResponse();
-        vueloResponse.setFechaSalida(vueloEntity.getFechaSalida());
-        vueloResponse.setFechaLlegada(vueloResponse.getFechaLlegada());
-        vueloResponse.setOrigen(vueloEntity.getOrigen());
-        vueloResponse.setDestino(vueloEntity.getDestino());
-        vueloResponse.setAvion(new AvionResponseBase(vueloEntity.getAvion().getCapacidad(),
-                vueloEntity.getAvion().getModelo()));
-        return vueloResponse;
+        return new ResponseBase<>(Constants.CODE_SUCCESS, Constants.MESSAGE_SUCCESS_FIND,
+                Optional.of(toVueloResponse(optionalVuelo.get())));
     }
 
     @Override
-    public List<VueloResponse> findAllByFechaSalida(LocalDate fechaSalida) {
+    public List<VueloResponse> findByFechaSalida(LocalDate fechaSalida) {
         List<VueloEntity> vueloEntities = vueloRepository.findByFechaSalida(fechaSalida);
         List<VueloResponse> vueloResponses = new ArrayList<>();
 
         for (VueloEntity vueloEntity : vueloEntities) {
-            vueloResponses.add(getVueloResponse(vueloEntity));
+            vueloResponses.add(toVueloResponse(vueloEntity));
         }
         return vueloResponses;
     }
@@ -93,6 +87,11 @@ public class VueloServiceImpl implements VueloService {
         VueloEntity vueloEntity = vueloEntityOptional.get();
         List<PilotoEntity> pilotosVuelo = vueloEntity.getPilotos();
 
+        if (pilotosVuelo == null) {
+            pilotosVuelo = new ArrayList<>();
+            vueloEntity.setPilotos(pilotosVuelo);
+        }
+
         for (PilotoEntity piloto : nuevosPilotos) {
             if (!pilotosVuelo.contains(piloto)) {
                 pilotosVuelo.add(piloto);
@@ -100,20 +99,10 @@ public class VueloServiceImpl implements VueloService {
             }
         }
 
-        //vueloEntity.setPilotos(pilotosVuelo);
         vueloRepository.save(vueloEntity);
 
-        VueloResponse vueloResponse = new VueloResponse(
-                vueloEntity.getFechaSalida(),
-                vueloEntity.getFechaLlegada(),
-                vueloEntity.getOrigen(),
-                vueloEntity.getDestino(),
-                new AvionResponseBase(
-                        vueloEntity.getAvion().getCapacidad(),
-                        vueloEntity.getAvion().getModelo()
-                ),
-                processPilotos(pilotosVuelo)
-        );
+        VueloResponse vueloResponse = toVueloResponse(vueloEntity);
+        vueloResponse.setPilotosVuelo(processPilotos(pilotosVuelo));
 
         return new ResponseBase<>(Constants.CODE_SUCCESS, Constants.MESSAGE_SUCCESS_UPDATED, Optional.of(vueloResponse));
     }
@@ -126,15 +115,8 @@ public class VueloServiceImpl implements VueloService {
         return pilotos;
     }
 
-    private VueloResponse getVueloResponse(VueloEntity vueloEntity){
-        VueloResponse vueloResponse = new VueloResponse();
-        vueloResponse.setOrigen(vueloEntity.getOrigen());
-        vueloResponse.setDestino(vueloEntity.getDestino());
-        vueloResponse.setFechaSalida(vueloEntity.getFechaSalida());
-        vueloResponse.setFechaLlegada(vueloResponse.getFechaLlegada());
-        vueloResponse.setAvion(new AvionResponseBase(vueloEntity.getAvion().getCapacidad(),
-                vueloEntity.getAvion().getModelo()));
-        return vueloResponse;
+    private VueloResponse toVueloResponse(VueloEntity vueloEntity){
+        return VueloMapper.INSTANCE.toVueloResponse(vueloEntity);
     }
 
 

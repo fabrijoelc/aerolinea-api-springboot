@@ -13,8 +13,9 @@ public class Constants {
     public static final String MESSAGE_ALREADY_DELETED = "El recurso ya ha sido eliminado.";
     public static final String MESSAGE_SUCCESS_UPDATED = "Datos actualizados correctamente.";
     public static final String MESSAGE_SUCCESS_DELET = "Datos eliminado con éxito.";
-    public static final String MESSAGE_SUCCES_INSERT = "Datos actualizados correctamente.";
+    public static final String MESSAGE_SUCCES_INSERT = "Datos registrados correctamente.";
     public static final String MESSAGE_SUCCESS_FIND = "Datos encontrados correctamente.";
+    public static final String MESSAGE_INVALID_DATES = "La fecha de llegada no puede ser anterior a la fecha de salida.";
 
 
 }
