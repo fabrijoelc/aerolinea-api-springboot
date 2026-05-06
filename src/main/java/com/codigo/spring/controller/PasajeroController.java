@@ -1,95 +1,78 @@
 package com.codigo.spring.controller;
 
-import com.codigo.spring.entity.AerolineaEntity;
-import com.codigo.spring.entity.BoletosEntity;
 import com.codigo.spring.entity.PasajeroEntity;
-import com.codigo.spring.repository.AerolineaRepository;
-import com.codigo.spring.repository.BoletoRepository;
-import com.codigo.spring.repository.PasajeroRepository;
 import com.codigo.spring.response.PasajeroInfoResponse;
+import com.codigo.spring.response.PasajeroResponse;
 import com.codigo.spring.response.ResponseBase;
-import com.codigo.spring.utils.Constants;
+import com.codigo.spring.service.PasajeroService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/pasajero")
+@Tag(name = "Pasajeros", description = "Endpoints para registrar y consultar pasajeros")
 public class PasajeroController {
 
-    private final PasajeroRepository pasajeroRepository;
-    private final BoletoRepository boletoRepository;
+    private final PasajeroService pasajeroService;
 
-    public PasajeroController(PasajeroRepository pasajeroRepository, BoletoRepository boletoRepository){
-        this.pasajeroRepository = pasajeroRepository;
-        this.boletoRepository = boletoRepository;
+    public PasajeroController(PasajeroService pasajeroService) {
+        this.pasajeroService = pasajeroService;
     }
 
+    @Operation(summary = "Registrar un pasajero", description = "Registra un pasajero en la base de datos.")
+    @ApiResponse(responseCode = "200", description = "Pasajero registrado correctamente")
     @PostMapping("/save")
-    public PasajeroEntity save(@RequestBody PasajeroEntity pasajeroEntity){
-        PasajeroEntity savedEntity = pasajeroRepository.save(pasajeroEntity);
-        return savedEntity;
+    public ResponseBase<PasajeroResponse> save(@RequestBody PasajeroEntity pasajeroEntity) {
+        return pasajeroService.save(pasajeroEntity);
     }
 
+    @Operation(summary = "Buscar pasajero por ID", description = "Obtiene la informacion basica de un pasajero usando su identificador.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Pasajero encontrado"),
+            @ApiResponse(responseCode = "404", description = "Pasajero no encontrado")
+    })
     @GetMapping("/find/{id}")
-    public PasajeroEntity findById(@PathVariable Integer id){
-        Optional<PasajeroEntity> optionalPasajero = pasajeroRepository.findById(id);
-
-        if(optionalPasajero.isPresent()){
-            return optionalPasajero.get();
-        }
-        return null;
+    public ResponseBase<PasajeroResponse> findById(
+            @Parameter(description = "ID del pasajero", example = "1")
+            @PathVariable Integer id) {
+        return pasajeroService.findById(id);
     }
 
-    @Operation(summary = "Trae la informacion del pasajero, incluyendo su boleto y vuelo")
-    @ApiResponse(responseCode = "404", description = "XXXXX",
-            content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = PasajeroInfoResponse.class),
-                    examples = @ExampleObject(value = "{\n" +
-                            "   \"code\": 404,\n" +
-                            "   \"message\": \"Datos encontrados correctamente.\",\n" +
-                            "   \"data\": {\n" +
-                            "       \"nombre\": \"Scottie\",\n" +
-                            "       \"apellido\": \"Tellett\",\n" +
-                            "       \"boletos\": null\n" +
-                            "   }\n" +
-                            "}")
-            ))
+    @Operation(summary = "Buscar boletos de un pasajero", description = "Obtiene la informacion del pasajero junto con los boletos asociados.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Informacion encontrada",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PasajeroInfoResponse.class),
+                            examples = @ExampleObject(value = "{\n" +
+                                    "  \"code\": 200,\n" +
+                                    "  \"message\": \"Datos encontrados correctamente.\",\n" +
+                                    "  \"data\": {\n" +
+                                    "    \"nombre\": \"Fabrizio\",\n" +
+                                    "    \"apellido\": \"Allcca\",\n" +
+                                    "    \"boletos\": [\n" +
+                                    "      {\n" +
+                                    "        \"origen\": \"Lima\",\n" +
+                                    "        \"destino\": \"Cusco\",\n" +
+                                    "        \"asiento\": 12\n" +
+                                    "      }\n" +
+                                    "    ]\n" +
+                                    "  }\n" +
+                                    "}")
+                    )),
+            @ApiResponse(responseCode = "404", description = "Pasajero no encontrado")
+    })
     @GetMapping("/find/boleto/{id}")
-    public ResponseBase<PasajeroInfoResponse> findBoleto(@PathVariable int id) {
-        List<BoletosEntity> boletos = boletoRepository.findBoletosbyPasajeroId(id);
-        PasajeroEntity pasajero = pasajeroRepository.findById(id).orElse(null);
-
-        if(pasajero == null){
-            return null;
-        }
-
-        PasajeroInfoResponse pasajeroInfoResponse = new PasajeroInfoResponse();
-        pasajeroInfoResponse.setNombre(pasajero.getNombre());
-        pasajeroInfoResponse.setApellido(pasajero.getApellido());
-
-        if(boletos.isEmpty()){
-            return new ResponseBase<>(Constants.CODE_NOT_FOUND, Constants.MESSAGE_NOT_FOUND, Optional.of(pasajeroInfoResponse));
-        }
-
-        pasajeroInfoResponse.setBoletos(new ArrayList<>());
-
-        for (BoletosEntity boleto : boletos) {
-            pasajeroInfoResponse.getBoletos().add(new PasajeroInfoResponse.BoletoInfo(
-                    boleto.getVuelo().getOrigen(),
-                    boleto.getVuelo().getDestino(),
-                    boleto.getAsiento()
-            ));
-        }
-        return new ResponseBase<>(Constants.CODE_SUCCESS, Constants.MESSAGE_SUCCESS_UPDATED,
-                Optional.of(pasajeroInfoResponse));
+    public ResponseBase<PasajeroInfoResponse> findBoleto(
+            @Parameter(description = "ID del pasajero", example = "1")
+            @PathVariable Integer id) {
+        return pasajeroService.findBoleto(id);
     }
 }

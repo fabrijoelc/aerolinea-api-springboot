@@ -1,24 +1,16 @@
-package com.codigo.spring.entity;
+package com.codigo.spring.response;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "pasajeros")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PasajeroEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_pasajero")
+public class PasajeroResponse {
     private Integer id;
-
     private String nombre;
-
     private String apellido;
 }
