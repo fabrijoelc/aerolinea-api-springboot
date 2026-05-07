@@ -1,6 +1,7 @@
 package com.codigo.spring.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class AerolineaEntity {
     @Column(name = "id_aerolinea")
     private Integer id;
 
+    @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
 
     @OneToMany(mappedBy = "aerolinea")

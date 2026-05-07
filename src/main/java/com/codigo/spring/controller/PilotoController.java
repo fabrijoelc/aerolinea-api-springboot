@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class PilotoController {
     @Operation(summary = "Registrar un piloto", description = "Registra un piloto en la base de datos.")
     @ApiResponse(responseCode = "200", description = "Piloto registrado correctamente")
     @PostMapping("/save")
-    public ResponseBase<PilotoResponse> save(@RequestBody PilotoEntity pilotoEntity) {
+    public ResponseBase<PilotoResponse> save(@Valid @RequestBody PilotoEntity pilotoEntity) {
         return pilotoService.save(pilotoEntity);
     }
 

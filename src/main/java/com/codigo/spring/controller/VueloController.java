@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class VueloController {
             @ApiResponse(responseCode = "500", description = "Fechas invalidas")
     })
     @PostMapping("/save")
-    public ResponseBase<VueloResponse> save(@RequestBody VueloRequest vueloRequest){
+    public ResponseBase<VueloResponse> save(@Valid @RequestBody VueloRequest vueloRequest){
         return vueloService.save(vueloRequest);
     }
 
@@ -65,7 +66,7 @@ public class VueloController {
             @ApiResponse(responseCode = "404", description = "Vuelo o pilotos no encontrados")
     })
     @PutMapping("/update/pilotos")
-    public ResponseBase<VueloResponse> updatePilotos(@RequestBody VueloRequestUpdatePilotos vueloRequest){
+    public ResponseBase<VueloResponse> updatePilotos(@Valid @RequestBody VueloRequestUpdatePilotos vueloRequest){
         return vueloService.addPilotosToVuelo(vueloRequest);
     }
 }

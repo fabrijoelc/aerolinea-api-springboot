@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,7 +30,7 @@ public class PasajeroController {
     @Operation(summary = "Registrar un pasajero", description = "Registra un pasajero en la base de datos.")
     @ApiResponse(responseCode = "200", description = "Pasajero registrado correctamente")
     @PostMapping("/save")
-    public ResponseBase<PasajeroResponse> save(@RequestBody PasajeroEntity pasajeroEntity) {
+    public ResponseBase<PasajeroResponse> save(@Valid @RequestBody PasajeroEntity pasajeroEntity) {
         return pasajeroService.save(pasajeroEntity);
     }
 

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,7 +28,7 @@ public class BoletoController {
             @ApiResponse(responseCode = "409", description = "El asiento ya esta ocupado")
     })
     @PostMapping("/save")
-    public ResponseBase<BoletoResponse> save(@RequestBody BoletoRequest boletoRequest){
+    public ResponseBase<BoletoResponse> save(@Valid @RequestBody BoletoRequest boletoRequest){
         return boletoService.save(boletoRequest);
     }
 }

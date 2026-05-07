@@ -2,6 +2,8 @@ package com.codigo.spring.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,8 +19,11 @@ public class PilotoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_piloto")
     private int id;
+    @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
+    @NotBlank(message = "El apellido es obligatorio")
     private String apellido;
+    @NotNull(message = "El estado es obligatorio")
     private Boolean estado;
 
     @Column(name = "fecha_creacion")

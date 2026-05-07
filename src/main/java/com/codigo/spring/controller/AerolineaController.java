@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class AerolineaController {
     @Operation(summary = "Registrar una aerolinea", description = "Registra una aerolinea en la base de datos.")
     @ApiResponse(responseCode = "200", description = "Aerolinea registrada correctamente")
     @PostMapping("/save")
-    public AerolineaEntity save(@RequestBody AerolineaEntity aerolineaEntity){
+    public AerolineaEntity save(@Valid @RequestBody AerolineaEntity aerolineaEntity){
         return aerolineaService.save(aerolineaEntity);
     }
 
@@ -58,7 +59,7 @@ public class AerolineaController {
     public ResponseBase<AerolineaEntity> update(
             @Parameter(description = "ID de la aerolinea", example = "1")
             @PathVariable int id,
-            @RequestBody AerolineaEntity aerolineaEntity){
+            @Valid @RequestBody AerolineaEntity aerolineaEntity){
         aerolineaEntity.setId(id);
         return aerolineaService.updateById(aerolineaEntity);
     }
